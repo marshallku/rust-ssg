@@ -1,4 +1,10 @@
 {
-    "words": [],
-    "ignorePaths": ["Cargo.lock", "Cargo.toml", "target"]
+    "words": [
+        "peekable"
+    ],
+    "ignorePaths": [
+        "Cargo.lock",
+        "Cargo.toml",
+        "target"
+    ]
 }
