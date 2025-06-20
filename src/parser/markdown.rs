@@ -30,12 +30,37 @@ impl MarkdownParser {
                     }
                     tokens.push(Token::Star(count));
                 }
+                ' ' => {
+                    // Skip leading spaces after special tokens
+                    if let Some(last_token) = tokens.last() {
+                        match last_token {
+                            Token::Hash(_) | Token::Star(_) => {
+                                continue;
+                            }
+                            _ => {
+                                // Collect consecutive spaces
+                                let mut spaces = String::from(ch);
+                                while let Some(&next_ch) = chars.peek() {
+                                    if next_ch == ' ' {
+                                        spaces.push(chars.next().unwrap());
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                tokens.push(Token::Text(spaces));
+                            }
+                        }
+                    } else {
+                        // Leading space at the beginning
+                        tokens.push(Token::Text(String::from(ch)));
+                    }
+                }
                 // TODO: Add more token patterns...
                 _ => {
-                    // Collect text until special character
+                    // Collect text until special character or newline
                     let mut text = String::from(ch);
                     while let Some(&next_ch) = chars.peek() {
-                        if "\\n#*_`[]()!-".contains(next_ch) {
+                        if next_ch == '\n' || "#*_`[]()!-".contains(next_ch) {
                             break;
                         }
                         text.push(chars.next().unwrap());
