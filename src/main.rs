@@ -7,8 +7,8 @@ fn main() {
     let file_content = fs::read_to_string(file_path).expect("Failed to read file");
 
     let matter = parser::matter::MatterParser::from_str(&file_content).unwrap();
-    let markdown = parser::markdown::MarkdownParser::tokenize(&matter.content());
+    let markdown = parser::markdown::MarkdownParser::new(&matter.content());
 
     println!("{:?}", matter.frontmatter());
-    println!("{:?}", markdown);
+    println!("{:?}", markdown.tokens);
 }

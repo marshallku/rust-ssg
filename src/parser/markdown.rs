@@ -1,12 +1,15 @@
 use crate::parser::types::Token;
 
-#[allow(dead_code)]
 pub struct MarkdownParser {
-    tokens: Vec<Token>,
-    position: usize,
+    pub tokens: Vec<Token>,
 }
 
 impl MarkdownParser {
+    pub fn new(input: &str) -> Self {
+        let tokens = Self::tokenize(input);
+        Self { tokens }
+    }
+
     pub fn tokenize(input: &str) -> Vec<Token> {
         let mut tokens = Vec::new();
         let mut chars = input.chars().peekable();
